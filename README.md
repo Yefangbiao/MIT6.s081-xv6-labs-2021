@@ -16,9 +16,9 @@
 
 # 课程笔记
 
-| 类型     | 地址                                                         | 备注                                       |
-| -------- | ------------------------------------------------------------ | ------------------------------------------ |
-| 课前准备 | [preparation](https://github.com/Yefangbiao/MIT6.s081-xv6-riscv/blob/riscv/note/preparation.md) | 基于Mac M1系统搭建课程环境，希望对你有帮助 |
-|          |                                                              |                                            |
-|          |                                                              |                                            |
+| 类型                        | 地址                                                         | 备注                                       |
+| --------------------------- | ------------------------------------------------------------ | ------------------------------------------ |
+| 课前准备                    | [preparation](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/preparation.md) | 基于Mac M1系统搭建课程环境，希望对你有帮助 |
+| Lab: Xv6 and Unix utilities | [Lab: Xv6 and Unix utilities](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab: Xv6 and Unix utilities.md) |                                            |
+|                             |                                                              |                                            |
 
