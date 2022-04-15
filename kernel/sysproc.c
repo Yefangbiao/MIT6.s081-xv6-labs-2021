@@ -81,6 +81,33 @@ int
 sys_pgaccess(void)
 {
   // lab pgtbl: your code here.
+   struct proc* p = myproc();
+  uint64 buf;   // 检测的页起始地址
+  int pagenum;  // 页数目
+  uint64 abits;    // 返回地址
+
+  int bitmap = 0;
+
+  if(argaddr(0, &buf) < 0)
+    return -1;
+  if(argint(1, &pagenum) < 0)
+    return -1;
+  argaddr(2, &abits);
+
+    uint64 complement=PTE_A;
+    complement=~complement;
+
+  for (int i=0;i<pagenum;i++) {
+      uint64 page = buf + i*PGSIZE;
+      pte_t* pte = walk(p->pagetable,page,0);
+      if ((*pte) & PTE_A) {
+          bitmap=bitmap|(1<<i);
+          *pte=(*pte)&complement;
+      }
+  }
+
+    copyout(p->pagetable, abits, (char *)&bitmap, sizeof (bitmap));
+
   return 0;
 }
 #endif
