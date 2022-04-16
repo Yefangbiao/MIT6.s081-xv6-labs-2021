@@ -67,6 +67,20 @@ usertrap(void)
     syscall();
   } else if((which_dev = devintr()) != 0){
     // ok
+    if (which_dev == 2 && p->alarm_time!=-1) {
+        // alarm
+        p->tick_time+=1;
+        if (p->alarm_time==p->tick_time) {
+            if(p->flag==0)
+            {
+                memmove(p->alarm_pt,p->trapframe,PGSIZE);
+                p->trapframe->epc=p->alarm_handler;
+                p->flag=1;//只有sigreturn可以将它置为0
+            }
+
+            p->tick_time=0;
+        }
+    }
   } else {
     printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
     printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
