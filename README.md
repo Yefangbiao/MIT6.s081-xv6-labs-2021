@@ -23,3 +23,9 @@
 | Lab: system calls           | [Lab: system calls](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20system%20calls.md) |                                            |
 | Lab: page tables            | [Lab: page tables](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20page%20tables.md) |                                            |
 
+
+----
+
+复习计划:
+1. https://mit-public-courses-cn-translatio.gitbook.io/mit6-s081/
+2. https://www.zhihu.com/column/c_1345025252318007298
