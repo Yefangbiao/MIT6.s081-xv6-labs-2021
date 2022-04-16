@@ -22,6 +22,11 @@
 | Lab: Xv6 and Unix utilities | [Lab: Xv6 and Unix utilities](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20Xv6%20and%20Unix%20utilities.md) |                                            |
 | Lab: system calls           | [Lab: system calls](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20system%20calls.md) |                                            |
 | Lab: page tables            | [Lab: page tables](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20page%20tables.md) |                                            |
+| Lab: traps                  | [Lab: traps](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20traps.md) |                                            |
+|                             |                                                              |                                            |
+|                             |                                                              |                                            |
+|                             |                                                              |                                            |
+|                             |                                                              |                                            |
 
 
 ----
