@@ -5,6 +5,8 @@
 #include "riscv.h"
 #include "defs.h"
 #include "fs.h"
+#include "spinlock.h"
+#include "proc.h"
 
 /*
  * the kernel's page table.
@@ -148,8 +150,8 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
   for(;;){
     if((pte = walk(pagetable, a, 1)) == 0)
       return -1;
-    if(*pte & PTE_V)
-      panic("mappages: remap");
+//    if(*pte & PTE_V)
+//      panic("mappages: remap");
     *pte = PA2PTE(pa) | perm | PTE_V;
     if(a == last)
       break;
@@ -303,7 +305,7 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
   pte_t *pte;
   uint64 pa, i;
   uint flags;
-  char *mem;
+//  char *mem;
 
   for(i = 0; i < sz; i += PGSIZE){
     if((pte = walk(old, i, 0)) == 0)
@@ -311,15 +313,26 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
     if((*pte & PTE_V) == 0)
       panic("uvmcopy: page not present");
     pa = PTE2PA(*pte);
-    flags = PTE_FLAGS(*pte);
-    if((mem = kalloc()) == 0)
-      goto err;
-    memmove(mem, (char*)pa, PGSIZE);
-    if(mappages(new, i, PGSIZE, (uint64)mem, flags) != 0){
-      kfree(mem);
+
+    // 将原来的页面设置为不可写，并且打上cow标记
+      *pte = ((*pte) & (~PTE_W)) | PTE_COW;
+
+      flags = PTE_FLAGS(*pte);
+
+    // 注释掉，不重新分配内存
+//    if((mem = kalloc()) == 0)
+//      goto err;
+//    memmove(mem, (char*)pa, PGSIZE);
+
+    // 这里mem改成pa，映射到相同的物理地址
+    if(mappages(new, i, PGSIZE, (uint64)pa, flags) != 0){
+//      kfree(mem);
       goto err;
     }
-  }
+
+    // 对于引用计数
+      refcnt_incr(pa,1);
+;  }
   return 0;
 
  err:
@@ -346,23 +359,34 @@ uvmclear(pagetable_t pagetable, uint64 va)
 int
 copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
 {
-  uint64 n, va0, pa0;
+    uint64 n, va0, pa0;
 
-  while(len > 0){
-    va0 = PGROUNDDOWN(dstva);
-    pa0 = walkaddr(pagetable, va0);
-    if(pa0 == 0)
-      return -1;
-    n = PGSIZE - (dstva - va0);
-    if(n > len)
-      n = len;
-    memmove((void *)(pa0 + (dstva - va0)), src, n);
+    while(len > 0){
+        va0 = PGROUNDDOWN(dstva);
 
-    len -= n;
-    src += n;
-    dstva = va0 + PGSIZE;
-  }
-  return 0;
+        if(va0 >= MAXVA)
+            return -1;
+        pte_t* pte = walk(pagetable, va0, 0);
+        if(pte && (*pte & PTE_COW) != 0){
+            // cow page
+            if(cowcopy(va0) != 0){
+                return -1;
+            }
+        }
+        pa0 = walkaddr(pagetable, va0);
+
+        if(pa0 == 0)
+            return -1;
+        n = PGSIZE - (dstva - va0);
+        if(n > len)
+            n = len;
+        memmove((void *)(pa0 + (dstva - va0)), src, n);
+
+        len -= n;
+        src += n;
+        dstva = va0 + PGSIZE;
+    }
+    return 0;
 }
 
 // Copy from user to kernel.
@@ -431,4 +455,43 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
   } else {
     return -1;
   }
+}
+
+
+int
+cowcopy(uint64 va){
+    va = PGROUNDDOWN(va);
+    pagetable_t p = myproc()->pagetable;
+    pte_t* pte = walk(p, va, 0);
+    uint64 pa = PTE2PA(*pte);
+    uint flags = PTE_FLAGS(*pte);
+
+    if(!(flags & PTE_COW)){
+        printf("not cow\n");
+        return -2; // not cow page
+    }
+
+    acquire_refcnt();
+    uint ref = refcnt_getter(pa);
+    if(ref > 1){
+        // ref > 1, alloc a new page
+        char* mem = kalloc_nolock();
+        if(mem == 0)
+            goto bad;
+        memmove(mem, (char*)pa, PGSIZE);
+        if(mappages(p, va, PGSIZE, (uint64)mem, (PTE_W | PTE_U | PTE_R | PTE_V| PTE_X) != 0){
+            kfree(mem);
+            goto bad;
+        }
+        refcnt_setter(pa, ref - 1);
+    }else{
+        // ref = 1, use this page directly
+        *pte = ((*pte) & (~PTE_COW)) | (PTE_W | PTE_U | PTE_R | PTE_V | PTE_X);
+    }
+    release_refcnt();
+    return 0;
+
+    bad:
+    release_refcnt();
+    return -1;
 }
