@@ -24,7 +24,7 @@
 | Lab: page tables                | [Lab: page tables](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20page%20tables.md) |                                            |
 | Lab: traps                      | [Lab: traps](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20traps.md) |                                            |
 | Lab: Copy-on-Write Fork for xv6 | [Lab: Copy-on-Write Fork for xv6](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20Copy-on-Write%20Fork%20for%20xv6.md) |                                            |
-|                                 |                                                              |                                            |
+| Lab: Multithreading             | [Lab: Multithreading](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20Multithreading.md) |                                            |
 |                                 |                                                              |                                            |
 |                                 |                                                              |                                            |
 
