@@ -26,7 +26,7 @@
 | Lab: Copy-on-Write Fork for xv6 | [Lab: Copy-on-Write Fork for xv6](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20Copy-on-Write%20Fork%20for%20xv6.md) |                                            |
 | Lab: Multithreading             | [Lab: Multithreading](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20Multithreading.md) |                                            |
 | Lab: networking                 | [Lab: networking](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20networking.md) |                                            |
-|                                 |                                                              |                                            |
+| Lab: locks                      | [Lab: locks](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20locks.md) |                                            |
 |                                 |                                                              |                                            |
 |                                 |                                                              |                                            |
 
