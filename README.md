@@ -28,7 +28,7 @@
 | Lab: networking                 | [Lab: networking](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20networking.md) |                                            |
 | Lab: locks                      | [Lab: locks](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20locks.md) |                                            |
 | Lab: file system                | [Lab: file system](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20file%20system.md) |                                            |
-|                                 |                                                              |                                            |
+| Lab: mmap                       | [Lab: mmap](https://github.com/Yefangbiao/MIT6.s081-xv6-labs-2021/blob/master/note/Lab:%20mmap.md) |                                            |
 
 
 ----
